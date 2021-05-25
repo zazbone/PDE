@@ -8,6 +8,9 @@ import PDE._typing as _ty
 from PDE import utils
 
 
+MODULE_PATH = Path(__file__).parent
+
+
 class System:
     FDM_ORDER: set[int] = {2, 4}
     DERIVATIVE: set[int] = {1, 2}
@@ -19,10 +22,10 @@ class System:
         (4, 2): [-1/12, 4/3, -5/2, 4/3, -1/12]
     }
     A_COEF: dict[tuple[int, int], list[float]] = {
-        (2, 1): [-1.5, 2, -0.5],
-        (2, 2): [2, -5, 4, -1],
-        (4, 1): [-25/12, 4, -3, 4/3, -1/4],
-        (4, 2): [15/14, -77/6, 107/6, -13, 61/12]
+        (2, 1): [1.5, -2, 0.5],
+        (2, 2): [-2, 5, -4, 1],
+        (4, 1): [25/12, -4, 3, -4/3, 1/4],
+        (4, 2): [-15/14, 77/6, -107/6, 13, -61/12]
     }
 
     def __init__(
@@ -42,7 +45,7 @@ class System:
         invert_h = 1 / (h ** derive_order)        
         c = np.array(cls.C_COEF[(order, derive_order)])
         a_f = np.array(cls.A_COEF[(order, derive_order)])
-        a_b = -a_f
+        a_b = -a_f[::-1]
         c_born = len(c) // 2
         a_born = len(a_b)
 
@@ -55,7 +58,7 @@ class System:
             # forward/backward
             for f, b in utils.close_range(a_born):
                 res[(slice(None),) * dim if dim else None, f, ...] = np.sum(a_f * np.take(v, np.arange(f, f + a_born), axis=dim))
-                res[(slice(None),) * dim if dim else None, b, ...] = np.sum(a_b * np.take(v, np.arange(b - a_born, b), axis=dim))
+                res[(slice(None),) * dim if dim else None, b, ...] = np.sum(a_b * np.take(v, np.arange(b - a_born + 1, b + 1), axis=dim))
                 
             return res * invert_h
         _derive.__doc__ = f"""
