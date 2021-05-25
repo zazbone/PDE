@@ -17,7 +17,7 @@ venv/bin/pip install -e .
 
 Enable jupyter kernel
 ```shell
-venv/bin/python -m ipython kernel install --user --name=myproject
+venv/bin/python -m ipykernel install --user --name=PDE
 ```
 
 Then open the project with jupyter notebook
