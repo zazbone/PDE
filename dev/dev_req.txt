@@ -1,0 +1,6 @@
+ipython
+ipykernel
+invoque
+jupyter
+mypy
+pandas

@@ -1,7 +1,5 @@
 from pathlib import Path
 
-import matplotlib.pyplot as plt
-import matplotlib.animation as anim
 import numpy as np
 
 import PDE._typing as _ty
@@ -59,8 +57,10 @@ class System:
             for f, b in utils.close_range(a_born):
                 res[(slice(None),) * dim if dim else None, f, ...] = np.sum(a_f * np.take(v, np.arange(f, f + a_born), axis=dim))
                 res[(slice(None),) * dim if dim else None, b, ...] = np.sum(a_b * np.take(v, np.arange(b - a_born + 1, b + 1), axis=dim))
-                
-            return res * invert_h
+            
+            res = res * invert_h
+            return res
+        
         _derive.__doc__ = f"""
         Centered finite differences methode
         {order} order derivative vectorized over {dim} dimension
@@ -75,21 +75,4 @@ class System:
 
 
 
-def creat_anim(file_name, X, wave, nb_frame, duration):
-    file_name = Path(file_name)
-    fig, ax = plt.subplots()
-    images = list()
-    n = len(wave)
-    modulus = n // nb_frame + 1
-    for i, u in enumerate(wave):
-        if i % modulus:
-            images.append(ax.plot(X, u, color='b', animated=True))
-    print(len(images))
-    print(modulus)
-    ani = anim.ArtistAnimation(
-        fig,
-        images,
-        interval= duration // nb_frame, 
-        blit=True,
-    )
-    ani.save(file_name)
+
