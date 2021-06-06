@@ -1,11 +1,11 @@
 from invoke import task
 from pathlib import Path
+import toml
 
 
-PROJECT_PATH = Path(__file__).parents[1]
-TEST_FOLDER = PROJECT_PATH / "tests"
-VENV = PROJECT_PATH / "venv/bin/"
-PY = VENV / "python"
+settings = toml.load("settings.toml")
+TEST_FOLDER = Path(settings["project"]["test_path"])
+PY = Path(settings["python_bin"]["py"])
 
 
 @task()

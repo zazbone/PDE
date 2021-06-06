@@ -1,0 +1,8 @@
+[project]
+project_path = "../"
+test_path = "../tests/"
+
+
+[python_bin]
+py = "../venv/bin/python"
+pip = "../venv/bin/pip"

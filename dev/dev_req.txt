@@ -4,3 +4,4 @@ invoque
 jupyter
 mypy
 pandas
+toml
