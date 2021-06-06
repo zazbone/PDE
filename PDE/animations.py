@@ -6,17 +6,17 @@ from matplotlib.animation import FuncAnimation
 
 from PDE import (
     MODULE_PATH,
-    _typing as _ty
     )
+from PDE.typing import FloatArray, ImageArray, TypeOfPath
 
 
-def anim1D(x: _ty.FloatArray, images_array: _ty.ImageArray, dt: float, output_name: _ty.TypeOfPath):
+def anim1D(x: FloatArray, images_array: ImageArray, dt: float, output_name: TypeOfPath):
     output_name = Path(output_name)
     fig = plt.figure(figsize=(15, 15))
     def animate(i):
         plt.clf()
-        plt.xlim(0, 10)
-        plt.ylim(0, 10)
+        plt.xlim(-1, 10)
+        plt.ylim(-1, 10)
         plt.plot(x, images_array[i], color='b')
 
     ani = FuncAnimation(fig, animate, interval=dt * 1000)
