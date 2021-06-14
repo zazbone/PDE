@@ -10,17 +10,16 @@ from PDE import (
 from PDE.typing import FloatArray, ImageArray, TypeOfPath
 
 
-def anim1D(x: FloatArray, images_array: ImageArray, dt: float, output_name: TypeOfPath):
-    output_name = Path(output_name)
-    fig = plt.figure(figsize=(15, 15))
+def anim1D(x: FloatArray, images_array: ImageArray, dt: float, lim: list[int]):
+    fig, ax = plt.subplots()
+    ax.set_xlim(lim[0:2])
+    ax.set_ylim(lim[2:])
+    line, = ax.plot([], [], color='b', lw=2)
     def animate(i):
-        plt.clf()
-        plt.xlim(-1, 10)
-        plt.ylim(-1, 10)
-        plt.plot(x, images_array[i], color='b')
+        line.set_data(x, images_array[i])
+        return (line,)
 
-    ani = FuncAnimation(fig, animate, interval=dt * 1000)
-    ani.save(output_name.with_suffix(".mp4"))
+    return FuncAnimation(fig, animate, interval=dt * 1000)
 
 
     
