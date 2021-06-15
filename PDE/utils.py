@@ -1,7 +1,9 @@
 from typing import NamedTuple, Sequence, Optional, Any
 from collections import namedtuple
 
-from PDE.typing import Generator as _Gen
+import numpy as np
+
+from PDE.typing import (Generator as _Gen, FloatArray)
 
 
 def new_argument_builder(
@@ -53,3 +55,15 @@ def close_range(n: int, start: int=0, step: int=1) -> _Gen[tuple[int, int], None
         yield queu, head
         queu += step
         head -= step
+
+def tridiag(values: FloatArray, size: int) -> FloatArray:
+    n = len(values) % 2
+    out = np.zeros((size, size))
+    for i in range(-n, n + 1):
+        out = out + np.eye(size, k=i) * values[i + n]
+    return out
+
+
+
+if __name__ == "__main__":
+    print(tridiag(np.array([2, 3, 2],), 6))

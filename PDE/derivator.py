@@ -65,16 +65,16 @@ class Derivator:
         if len(self._dim) == 1:
             M = np.zeros((self._dim[0], self._dim[0]))
             for row in range(len(M)):
-                if row <= clim:
+                if row < clim:
                     M[row, row:(alim + row)] =a_f
                 elif row >= self._dim[0] - clim:
                     M[row, (row - alim + 1):(row + 1)] = a_b
                 else:
                     M[row, (row - clim):(row + clim + 1)] = c
-
+            M = M * self._inverth[axis - 1] ** dorder
             def derive(u: FloatArray) -> FloatArray:
                 bounded = self._bound(u)
-                return M.dot(bounded) * self._inverth[axis - 1]
+                return M.dot(bounded)
             derive.__doc__ = doc
             return derive
         
